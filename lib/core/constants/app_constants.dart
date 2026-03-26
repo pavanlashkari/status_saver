@@ -1,5 +1,7 @@
 class AppConstants {
   static const String appName = 'Status Saver';
+  static const String appSubtitle = 'Auto-detected WhatsApp statuses';
+  static const String appVersion = '1.0.0';
 
   // WhatsApp status directories
   static const List<String> whatsappStatusPaths = [
@@ -16,10 +18,6 @@ class AppConstants {
   // Supported extensions
   static const List<String> imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
   static const List<String> videoExtensions = ['mp4', 'mkv', 'avi', '3gp'];
-
-  // UI
-  static const int gridCrossAxisCount = 3;
-  static const double gridSpacing = 2.0;
 
   // SharedPreferences keys
   static const String keyOnboardingComplete = 'onboarding_complete';

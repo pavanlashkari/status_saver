@@ -17,7 +17,7 @@ class SettingsState {
   final bool statusAlerts;
 
   const SettingsState({
-    this.darkMode = false,
+    this.darkMode = true,
     this.statusAlerts = false,
   });
 

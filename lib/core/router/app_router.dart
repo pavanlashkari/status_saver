@@ -2,9 +2,9 @@ import 'package:go_router/go_router.dart';
 import '../../features/home/screens/home_screen.dart';
 import '../../features/onboarding/screens/onboarding_screen.dart';
 import '../../features/viewer/screens/viewer_screen.dart';
-import '../../features/saved/screens/saved_screen.dart';
-import '../../features/settings/screens/settings_screen.dart';
 import '../../core/models/status_file.dart';
+
+export 'package:go_router/go_router.dart' show GoRouter;
 
 class AppRouter {
   static GoRouter router(bool onboardingComplete) => GoRouter(
@@ -27,14 +27,6 @@ class AppRouter {
                 initialIndex: extra['index'] as int,
               );
             },
-          ),
-          GoRoute(
-            path: '/saved',
-            builder: (context, state) => const SavedScreen(),
-          ),
-          GoRoute(
-            path: '/settings',
-            builder: (context, state) => const SettingsScreen(),
           ),
         ],
       );

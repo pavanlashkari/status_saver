@@ -4,10 +4,29 @@ import 'core/router/app_router.dart';
 import 'core/theme/app_theme.dart';
 import 'features/settings/bloc/settings_bloc.dart';
 
-class StatusSaverApp extends StatelessWidget {
+class StatusSaverApp extends StatefulWidget {
   final bool onboardingComplete;
 
   const StatusSaverApp({super.key, required this.onboardingComplete});
+
+  @override
+  State<StatusSaverApp> createState() => _StatusSaverAppState();
+}
+
+class _StatusSaverAppState extends State<StatusSaverApp> {
+  late final GoRouter _router;
+
+  @override
+  void initState() {
+    super.initState();
+    _router = AppRouter.router(widget.onboardingComplete);
+  }
+
+  @override
+  void dispose() {
+    _router.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +38,7 @@ class StatusSaverApp extends StatelessWidget {
           theme: AppTheme.light,
           darkTheme: AppTheme.dark,
           themeMode: state.darkMode ? ThemeMode.dark : ThemeMode.light,
-          routerConfig: AppRouter.router(onboardingComplete),
+          routerConfig: _router,
         );
       },
     );
