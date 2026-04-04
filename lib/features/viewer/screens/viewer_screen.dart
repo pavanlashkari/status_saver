@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart' show Share, XFile;
 import '../../../core/models/status_file.dart';
+import '../../../core/services/ad_service.dart';
 import '../../../core/services/storage_service.dart';
 import '../../../core/theme/app_theme.dart';
 import '../widgets/image_viewer.dart';
@@ -24,6 +25,7 @@ class _ViewerScreenState extends State<ViewerScreen> {
   late PageController _pageController;
   late int _currentIndex;
   final _storageService = StorageService();
+  final _adService = AdService();
 
   @override
   void initState() {
@@ -43,6 +45,22 @@ class _ViewerScreenState extends State<ViewerScreen> {
   Future<void> _saveStatus() async {
     final saved = await _storageService.saveStatus(_currentStatus);
     if (!mounted) return;
+    if (saved) _adService.onDownloadComplete();
+    _showSaveSnackBar(saved);
+  }
+
+  void _saveHdStatus() {
+    _adService.showRewardedAd(
+      onRewardEarned: () async {
+        final saved = await _storageService.saveStatus(_currentStatus);
+        if (!mounted) return;
+        if (saved) _adService.onDownloadComplete();
+        _showSaveSnackBar(saved, hd: true);
+      },
+    );
+  }
+
+  void _showSaveSnackBar(bool saved, {bool hd = false}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Row(
@@ -54,7 +72,9 @@ class _ViewerScreenState extends State<ViewerScreen> {
             ),
             const SizedBox(width: 10),
             Text(
-              saved ? 'Saved to gallery!' : 'Failed to save',
+              saved
+                  ? (hd ? 'HD saved to gallery!' : 'Saved to gallery!')
+                  : 'Failed to save',
               style: const TextStyle(fontWeight: FontWeight.w500),
             ),
           ],
@@ -246,10 +266,28 @@ class _ViewerScreenState extends State<ViewerScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 12),
-                  // Share button
+                  const SizedBox(height: 10),
+                  // HD Download + Share row
                   Row(
                     children: [
+                      Expanded(
+                        child: SizedBox(
+                          height: 46,
+                          child: OutlinedButton.icon(
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: Colors.white,
+                              side: BorderSide(color: AppColors.mint.withAlpha(120)),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            onPressed: _saveHdStatus,
+                            icon: const Icon(Icons.hd_rounded, size: 20),
+                            label: const Text('HD Save', style: TextStyle(fontSize: 14)),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
                       Expanded(
                         child: SizedBox(
                           height: 46,

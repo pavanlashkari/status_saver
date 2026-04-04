@@ -10,6 +10,7 @@ import '../widgets/status_grid.dart';
 import '../../saved/bloc/saved_bloc.dart';
 import '../../saved/screens/saved_screen.dart';
 import '../../settings/screens/settings_screen.dart';
+import '../../ads/widgets/ad_banner_placeholder.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -47,12 +48,20 @@ class _HomeShellState extends State<_HomeShell> {
     final mint = theme.primaryColor;
 
     return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: const [
-          _StatusPage(),
-          SavedPage(),
-          SettingsScreen(),
+      body: Column(
+        children: [
+          Expanded(
+            child: IndexedStack(
+              index: _currentIndex,
+              children: const [
+                _StatusPage(),
+                SavedPage(),
+                SettingsScreen(),
+              ],
+            ),
+          ),
+          if (_currentIndex == 0 || _currentIndex == 1)
+            const AdBannerWidget(),
         ],
       ),
       bottomNavigationBar: Container(
